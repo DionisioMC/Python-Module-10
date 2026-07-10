@@ -26,11 +26,27 @@ def enchantment_factory(enchantment_type: str) -> Callable:
 
 
 def memory_vault() -> dict[str, Callable]:
-    memory = {}
+    memory = dict()
 
-    def store(key: str, value) -> None:
+    def store(key: str, value: int | str) -> None:
         memory[key] = value
 
-    def recall(key: str):
-        memory.get(key, "Memory not found")
+    def recall(key: str) -> int | str:
+        return memory.get(key, "Memory not found")
     return {"store": store, "recall": recall}
+
+
+if __name__ == "__main__":
+    counter = mage_counter()
+    print(counter())
+    print(counter())
+    accumulator = spell_accumulator(10)
+    print(accumulator(20))
+    print(accumulator(30))
+    factory = enchantment_factory("Fire")
+    print(factory("Ball"))
+    vault = memory_vault()
+    store = vault["store"]
+    store("secret", 42)
+    print(vault["recall"]("secret"))
+    print(vault["recall"]("batata"))
